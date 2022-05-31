@@ -24,7 +24,9 @@ def scrape_amz(product_id):
     driver.get(url)
     soup = BeautifulSoup(driver.page_source, "html.parser")
     review_count = soup.find("div", class_= "a-row a-spacing-base a-size-base").text
-    review_no = review_count.replace("\n", "").replace(" ","").replace(",","")[:-13].split("|")[1]
+    review_no = review_count.replace("\n", "").replace(" ","").replace(",","")
+    max_len_rno = min([13, len(review_no)])
+    review_no = review_no[:-max_len_rno].split("|")[1]
     review_no = float(review_no)
     pages_counted = round(review_no/10) -1
     print(f"total pages would be {pages_counted} but we only look at {pages}")
