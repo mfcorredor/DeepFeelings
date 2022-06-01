@@ -19,7 +19,6 @@ yapf
 # API
 gcsfs
 google-cloud-storage
-mlflow
 s3fs
 tweepy
 requests
@@ -30,3 +29,15 @@ joblib
 memoized-property
 termcolor
 python-dotenv
+
+#scraping
+selenium
+bs4
+BeautifulSoup
+
+#preprocessing
+string
+nltk.stem
+nltk.corpus
+re
+emoji
