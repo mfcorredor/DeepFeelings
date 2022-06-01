@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import gcsfs
 import pandas as pd
 
+
 def get_user_id(user_name, bearer_token):
     '''returns the twitter id given a user name'''
 
