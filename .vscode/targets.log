@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Mon May 30 12:15:57 2022
+# Make data base, printed on Wed Jun  1 17:24:12 2022
 
 # Variables
 
@@ -46,7 +46,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # makefile (from `Makefile', line 47)
 PYPI_USERNAME = <AUTHOR>
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/qr/lcd4mzfs405dggq4hnsm8d900000gn/T/vscode-ipc-77b35657-660b-4fa6-89c5-335b98962658.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/qr/lcd4mzfs405dggq4hnsm8d900000gn/T/vscode-ipc-c34019ee-ebe2-4e95-a481-340eaec2484c.sock
 # environment
 VSCODE_CWD = /Users/luciagd/code/mfcorredor/DeepFeelings
 # environment
@@ -112,7 +112,7 @@ USER = luciagd
 # makefile
 .DEFAULT_GOAL := install_requirements
 # environment
-TERM_SESSION_ID = 4FDE55CE-5897-4776-BC40-B4772C526951
+TERM_SESSION_ID = 983C3019-E5AC-4B69-88A2-AE4CC862D781
 # environment
 LESS = -R
 # automatic
@@ -142,7 +142,7 @@ TERM_PROGRAM_VERSION = 444
 # environment
 NVM_DIR = /Users/luciagd/.nvm
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.4620816.4620822.9636CD6F-57FC-4D36-B5E6-222C653CF2E1
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.4620816.4620822.ACDC661A-B6C1-4627-ACD1-53A17475B86F
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -180,7 +180,7 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 5876
+VSCODE_PID = 36749
 # variable set hash-table stats:
 # Load=85/1024=8%, Rehash=0, Collisions=2/111=2%
 
@@ -190,9 +190,9 @@ VSCODE_PID = 5876
 
 # Directories
 
-# . (device 16777220, inode 5059659): 16 files, no impossibilities.
+# . (device 16777220, inode 5059659): 18 files, no impossibilities.
 
-# 16 files, no impossibilities in 1 directories.
+# 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -366,6 +366,6 @@ install:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon May 30 12:15:57 2022
+# Finished Make data base on Wed Jun  1 17:24:12 2022
 
  
