@@ -33,3 +33,10 @@ selenium
 bs4
 BeautifulSoup
 datetime
+
+#preprocessing
+string
+nltk.stem
+nltk.corpus
+re
+emoji
