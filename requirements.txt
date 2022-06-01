@@ -27,3 +27,16 @@ six>=1.14
 joblib
 memoized-property
 termcolor
+
+#scraping
+selenium
+bs4
+BeautifulSoup
+datetime
+
+#preprocessing
+string
+nltk.stem
+nltk.corpus
+re
+emoji
