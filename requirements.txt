@@ -21,6 +21,8 @@ gcsfs
 google-cloud-storage
 mlflow
 s3fs
+tweepy
+requests
 
 # utilities
 six>=1.14
