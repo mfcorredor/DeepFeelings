@@ -6,4 +6,5 @@ raw_data/
 *.csv
 **/__pycache__/
 .env
-.log
+*.log
+.python-version
