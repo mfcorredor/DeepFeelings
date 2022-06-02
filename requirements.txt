@@ -28,6 +28,11 @@ six>=1.14
 joblib
 memoized-property
 termcolor
+
+
+# web scraping
+BeautifulSoup
+requests
 python-dotenv
 
 #scraping
@@ -41,3 +46,4 @@ nltk.stem
 nltk.corpus
 re
 emoji
+
