@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import emoji
+import plotly.express as px
+
+# page config
+# Use the full page instead of a narrow central column
+st.set_page_config(layout="wide")
 
 #title
 st.markdown("""# DeepFeelings
@@ -22,10 +27,16 @@ df2 = df2[['date','polarity']]
 df2.sort_values(by = ['date'], inplace=True)
 df2['date']= pd.to_datetime(df2['date'])
 
+
+#piechart
 #calculate percentages of polarities for the pie chart
 positive_percentage = int(21/50*100)
 negative_percentage = int(16/50*100)
 neutral_percentage = int(13/50*100)
+
+label = ['Negative', 'Neutral', 'Positive']
+values = [negative_percentage, neutral_percentage, positive_percentage]
+
 
 # pie chart
 labels = 'Positive', 'Negative', 'Neutral'
@@ -37,7 +48,15 @@ ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
         shadow=True, startangle=90)
 ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
+#second piechart
+#plotly_pie = px.pie(df2, values=values, names=label, title='Reviews Polarity')
+
 # line count (not very useful)
+
+#fig1, ax1 = plt.subplots()
+#piechart_matplot = ax1.pie(sizes,labels=labels, explode = explode, autopct='%1.1f%%',
+        #shadow=True, startangle=90)
+
 line_count = st.slider('Select a line count', 1, 10, 3)
 head_df2 = df2.head(line_count)
 head_df2
@@ -45,8 +64,10 @@ head_df2
 # buttons to dispay numbers (number of reviews, number of positive reviews, etc.)
 st.button("Hola")
 
-# pyploting piechart
-st.pyplot(fig1)
+#columns creation
+columns = st.columns(3)
+first_column = columns[0].pyplot(fig1)
+
 
 # markdowns to add space
 st.markdown("""
@@ -148,10 +169,16 @@ with plt.style.context('cyberpunk'):
 
     plt.tight_layout()
 
-st.pyplot(fig)
 
 with st.sidebar:
 
     st.text_input('Brand')
     st.text_input('Product')
     st.pyplot(fig2)
+
+
+
+second_column = columns[1].pyplot(fig)
+
+
+third_column = columns[2].pyplot(fig2)
