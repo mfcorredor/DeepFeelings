@@ -44,7 +44,7 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
     #Make text lowercase
     data.text = data.text.apply(lambda x: x.lower())
 
-    #remove text in square brackets
+    '''#remove text in square brackets
     data.text = re.sub('\[.*?\]', '', data.text)
 
     #remove links
@@ -64,7 +64,7 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
 
     # Remove user names
     data.text = data.text.apply(lambda x: ' '.join([word for word in x.split()\
-                                if not word.startswith("@")]))
+                                if not word.startswith("@")]))'''
 
     # Remove non english words
     en_words = set(words.words())
