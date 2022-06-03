@@ -65,8 +65,8 @@ def scrape_amz(product_id):
     metas_df[1] = pd.to_datetime(metas_df[1])
     texts_df = pd.DataFrame(reviews)
     df = pd.DataFrame()
-    df["country"] = metas_df[0]
+    #df["country"] = metas_df[0]
     df["date"] = metas_df[1]
-    df["content"] = texts_df
+    df["text"] = texts_df
 
     return df
