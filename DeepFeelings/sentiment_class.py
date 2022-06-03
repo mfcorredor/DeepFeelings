@@ -10,6 +10,9 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import AutoModelForSeq2SeqLM, AutoConfig
 import torch
 
+def remove_emoji(string):
+        return emoji.get_emoji_regexp().sub(u'', string)
+
 def get_data_sentiment_model(ls_product_id, user_name, n_tweets):
     '''Get the data from the twitter api and amazon web scraping and join to a df.
         Returns a df with 3 columns: country, dates and text with the tweets and amazon product reviews.
@@ -36,10 +39,10 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
                                 if not word.startswith("@")]))
 
     #Remove emojis
-    data.text = emoji.get_emoji_regexp().sub(u'', data["text"])
+    data.text = data.text.apply(lambda x: remove_emoji(x))
 
     #Make text lowercase
-    data.text = data.text.str.lower()
+    data.text = data.text.apply(lambda x: x.lower())
 
     #remove text in square brackets
     data.text = re.sub('\[.*?\]', '', data.text)
@@ -57,7 +60,7 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
     data.text = re.sub('\w*\d\w*', '', data.text)
 
     #remove numbers
-    data.text = ''.join([i for i in data.text if not i.isdigit()])
+    #data.text = ''.join([i for i in data.text if not i.isdigit()])
 
     # Remove user names
     data.text = data.text.apply(lambda x: ' '.join([word for word in x.split()\
