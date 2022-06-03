@@ -1,4 +1,5 @@
 import string
+from nltk.corpus import words
 import pandas as pd
 import re
 import numpy as np
@@ -35,7 +36,7 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
                                 if not word.startswith("@")]))
 
     #Remove emojis
-    data.text = emoji.get_emoji_regexp().sub(u'', df["text"])
+    data.text = emoji.get_emoji_regexp().sub(u'', data["text"])
 
     #Make text lowercase
     data.text = data.text.str.lower()
@@ -76,7 +77,7 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
 
     return data
 
-def get_sentiment(product_id, user_name, bearer_token, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
+def get_sentiment(ls_product_id, user_name, n_tweets, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
 
     """get the sentiment analysis for a determinated tw user (user_name) and
         its amz products. Arguments: product_id from amz, user_name of tw,
@@ -93,13 +94,13 @@ def get_sentiment(product_id, user_name, bearer_token, model_path = "cardiffnlp/
     prediction = []
 
     for i in range(1000):
-        inputs = self.tokenizer(X_pred[i], return_tensors="pt")
+        inputs = tokenizer(X_pred[i], return_tensors="pt")
 
         with torch.no_grad():
-            logits = self.model(**inputs).logits
+            logits = model(**inputs).logits
 
         predicted_class_id = logits.argmax().item()
-        prediction.append(self.model.config.id2label[predicted_class_id])
+        prediction.append(model.config.id2label[predicted_class_id])
 
     data["sentiment"] = prediction
 
