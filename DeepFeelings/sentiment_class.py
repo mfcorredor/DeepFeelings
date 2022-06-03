@@ -76,7 +76,7 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
 
     return data
 
-def sentiment_analysis(product_id, user_name, bearer_token, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
+def get_sentiment(product_id, user_name, bearer_token, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
 
     """get the sentiment analysis for a determinated tw user (user_name) and
         its amz products. Arguments: product_id from amz, user_name of tw,
