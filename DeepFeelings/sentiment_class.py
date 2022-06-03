@@ -37,14 +37,42 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
     #Remove emojis
     data.text = emoji.get_emoji_regexp().sub(u'', df["text"])
 
-    data.text = str(text).lower() #Make text lowercase
-    data.text = re.sub('\[.*?\]', '', text) #remove text in square brackets
-    data.text = re.sub('https?://\S+|www\.\S+', '', text) #,remove links
-    data.text = re.sub('<.*?>+', '', text) #remove punctuation
-    data.text = re.sub('[%s]' % re.escape(string.punctuation), '', text) #remove punctuation
-    data.text = re.sub('\n', '', text) #containing numbers
-    data.text = re.sub('\w*\d\w*', '', text) #remove numbers
-    data.text = ''.join([i for i in text if not i.isdigit()]) #remove numbers
+    #Make text lowercase
+    data.text = data.text.str.lower()
+
+    #remove text in square brackets
+    data.text = re.sub('\[.*?\]', '', data.text)
+
+    #remove links
+    data.text = re.sub('https?://\S+|www\.\S+', '', data.text)
+
+    #remove some punctuation
+    data.text = re.sub('<*>+', '', data.text)
+
+    #containing numbers
+    data.text = re.sub('\n', '', data.text)
+
+    #remove numbers
+    data.text = re.sub('\w*\d\w*', '', data.text)
+
+    #remove numbers
+    data.text = ''.join([i for i in data.text if not i.isdigit()])
+
+    # Remove user names
+    data.text = data.text.apply(lambda x: ' '.join([word for word in x.split()\
+                                if not word.startswith("@")]))
+
+    # Remove non english words
+    en_words = set(words.words())
+    data.text = data.text.apply(lambda x: " ".join(w for w in x.split()\
+                                if w in en_words))
+    data.text.replace('', np.nan, inplace=True)
+    data.dropna(subset=['text'], inplace=True)
+
+    # Remove strings with less than 3 words
+    data['length'] = data.text.apply(lambda x: len(x.split()) )
+    data = data[data['length'] >=3]
+    data = data.reset_index().drop(columns=['index', 'length'])
 
     return data
 
@@ -60,7 +88,8 @@ def sentiment_analysis(product_id, user_name, bearer_token, model_path = "cardif
     model = AutoModelForSequenceClassification.from_pretrained(model_path)
     config = AutoConfig.from_pretrained(model_path)
 
-    X_pred = df["text"].tolist()
+    data = preproc_sentiment_model(ls_product_id, user_name, n_tweets)
+    X_pred = data["text"].tolist()
     prediction = []
 
     for i in range(1000):
@@ -72,6 +101,6 @@ def sentiment_analysis(product_id, user_name, bearer_token, model_path = "cardif
         predicted_class_id = logits.argmax().item()
         prediction.append(self.model.config.id2label[predicted_class_id])
 
-    df["sentiment"] = prediction
+    data["sentiment"] = prediction
 
-    return df
+    return data
