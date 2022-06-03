@@ -35,7 +35,7 @@ head_df2
 st.button("Hola")
 
 #columns creation
-columns = st.columns(3)
+columns = st.columns(2)
 first_column = columns[0].pyplot(fig1)
 
 # markdowns to add space
@@ -45,4 +45,4 @@ st.markdown("""
 """)
 second_column = columns[1].pyplot(fig2)
 
-third_column = columns[2].pyplot(fig3)
+st.pyplot(fig3)
