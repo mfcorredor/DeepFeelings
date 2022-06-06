@@ -4,11 +4,15 @@ import pandas as pd
 import emoji
 import plotly.express as px
 from data import get_data
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from preprocfromjannick import list_of_strings
+import mplcyberpunk
 
 df2 = get_data()
 
-#piechart
-#calculate percentages of polarities for the pie chart
+
+#calculate percentages of polarities for the piechart
 positive_percentage = int(21/50*100)
 negative_percentage = int(16/50*100)
 neutral_percentage = int(13/50*100)
@@ -16,28 +20,38 @@ neutral_percentage = int(13/50*100)
 labels = ['Negative', 'Neutral', 'Positive']
 sizes = [negative_percentage, neutral_percentage, positive_percentage]
 
-# pie chart
 def pie_chart():
-    explode = (0.1, 0, 0)
-    fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
-        shadow=True, startangle=90)
-    ax1.axis('equal')
+    '''returns a piechart with percentage of negative, poistive and neutral reviews'''
+
+    #apply cyberpunk style
+    with plt.style.context('cyberpunk'):
+        explode = (0.1, 0, 0)
+        fig1, ax1 = plt.subplots()
+        ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+            shadow=True, startangle=90, radius=1, frame=False,)
+        ax1.axis('equal')
 
     return fig1
 
+list_of_strings_for_each_text = list_of_strings()
 
+def word_cloud(): #add topic as param
+    ''' returns a word cloud from a list of words'''
 
-def bar_chart():
-    fig2, ax1 = plt.subplots()
-    # plt.figure(figsize=(12,5))
-    plt.hist(df2['polarity'], color='orange', width=0.7)
+    with plt.style.context('cyberpunk'):
+        fig2, ax1 = plt.subplots()
+        string_of_all_texts = "".join(map(lambda x : x[0],list_of_strings_for_each_text))
+        wordcloud = WordCloud().generate(string_of_all_texts)
 
-    return fig2
+        ax1.imshow(wordcloud, interpolation='bilinear')
+        plt.axis("off")
 
+        return fig2
 
 def timeline_chart():
-    #timeline chart
+    '''returns a timeline chart of postive, negative and neutral rivews per month'''
+
+    #importing the dataframe
     df = pd.read_csv('/home/lewagonvaleria/code/mfcorredor/DeepFeelings/raw_data/example_amz_rev.csv').iloc[:,1:]
     df['date'] = pd.to_datetime(df['date'])
     df.sort_values(by = ['date'] , inplace = True)
@@ -56,9 +70,8 @@ def timeline_chart():
     polarities_df.drop( columns = ['polarity_fractions'] , inplace= True)
     dummy = polarities_df.iloc[1,0]
 
-    import mplcyberpunk
 
-    polarity_colors = ['#850f2e','#bf810d','#0c853c']
+    # polarity_colors = ['#850f2e','#bf810d','#0c853c']
     plt.rcParams["font.family"] = "cursive"
 
 
@@ -76,8 +89,7 @@ def timeline_chart():
         polarities_df.iloc[:10].plot(kind = 'bar' ,
                         width = 0.7 ,
                         figsize = (14,6),
-                        color =  polarity_colors,
-                        ax = ax);
+                        ax = ax); # color can be added : color =  polarity_colors
 
         #storing coordinates for the line
         coords = []
