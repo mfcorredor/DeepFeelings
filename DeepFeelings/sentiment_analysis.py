@@ -10,10 +10,12 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import AutoModelForSeq2SeqLM, AutoConfig
 import torch
 
+
+
 def remove_emoji(string):
         return emoji.get_emoji_regexp().sub(u'', string)
 
-def get_data_sentiment_model(ls_product_id, user_name, n_tweets):
+def get_data_sentiment_model(ls_product_id, user_name, n_tweets=100):
     '''Get the data from the twitter api and amazon web scraping and join to a df.
         Returns a df with 3 columns: country, dates and text with the tweets and amazon product reviews.
         ls_product_id = is a list of amazon product ids of the enterprise
@@ -30,7 +32,7 @@ def get_data_sentiment_model(ls_product_id, user_name, n_tweets):
     tweets = get_lastest_tweets(user_name, n_tweets)
     return pd.concat([df,tweets])
 
-def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
+def preproc_sentiment_model(ls_product_id, user_name, n_tweets=100):
 
     data = get_data_sentiment_model(ls_product_id, user_name, n_tweets)
 
@@ -80,7 +82,7 @@ def preproc_sentiment_model(ls_product_id, user_name, n_tweets):
 
     return data
 
-def get_sentiment(ls_product_id, user_name, n_tweets, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
+def get_sentiment(ls_product_id, user_name, n_tweets=100, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
 
     """get the sentiment analysis for a determinated tw user (user_name) and
         its amz products. Arguments: product_id from amz, user_name of tw,
