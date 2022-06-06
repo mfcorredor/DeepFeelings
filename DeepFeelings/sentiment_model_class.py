@@ -1,6 +1,3 @@
-from DeepFeelings.data import get_data, get_X_pred
-from DeepFeelings.preproc import clean_data
-from DeepFeelings.results import get_results
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import AutoModelForSeq2SeqLM, AutoConfig
 import torch
