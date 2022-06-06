@@ -5,7 +5,6 @@ import pandas as pd
 import emoji
 import plotly.express as px
 from PIL import Image
-from data import get_data
 from visualization import pie_chart, timeline_chart, word_cloud
 
 df2 = get_data()
