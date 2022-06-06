@@ -9,7 +9,7 @@ from preproc import preproc
 
 
 
-def get_sentiment(ls_product_id, user_name, n_tweets=100, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
+def get_sentiment(data, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
 
     """get the sentiment analysis for a determinated tw user (user_name) and
         its amz products. Arguments: product_id from amz, user_name of tw,
@@ -21,7 +21,7 @@ def get_sentiment(ls_product_id, user_name, n_tweets=100, model_path = "cardiffn
     model = AutoModelForSequenceClassification.from_pretrained(model_path)
     config = AutoConfig.from_pretrained(model_path)
 
-    data = preproc(ls_product_id, user_name, n_tweets)
+    #data = preproc(ls_product_id, user_name, n_tweets)
     X_pred = data["text"].tolist()
     prediction = []
 
