@@ -2,13 +2,15 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
-
+import os
 
 # using the product ID to create url
 def scrape_amz(product_id):
 
     #start webdriver
-    driver = webdriver.Chrome("/Users/jannick/Downloads/chromedriver")
+    absolute_path = os.path.abspath("../chromedriver")
+    driver = webdriver.Chrome(absolute_path)
+    #"/Users/luciagd/Downloads/chromedriver"
 
     #defining the url for the first page
     page_no = 1
