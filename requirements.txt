@@ -31,14 +31,13 @@ termcolor
 
 
 # web scraping
-BeautifulSoup
+bs4
 requests
 python-dotenv
 
 #scraping
 selenium
-bs4
-BeautifulSoup
+
 
 #preprocessing
 string
@@ -47,3 +46,5 @@ nltk.corpus
 re
 emoji
 
+#model
+tensorflow_hub
