@@ -121,7 +121,7 @@ def get_clusters_plotted(df, default_on_comments =True, default_w_stopwords = Tr
         bow2 = list(s_bow)
 
         bow_df = pd.DataFrame(bow2)
-        bow_df.rename(axis = 1, mapper= {0:"texts"},inplace=True)
+        bow_df.rename(axis = 1, mapper= {0:"text"},inplace=True)
 
         #W2V
         tf_idf_vectorizer = TfidfVectorizer()
