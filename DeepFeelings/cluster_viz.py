@@ -12,6 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import plotly.express as px
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
+import string
 
 
 
@@ -36,18 +37,26 @@ def remove_stop(text_list):
             result.append(i)
     return result
 
+#remove all punctuation
+def remove_punct(text):
+    for p in string.punctuation:
+        text = text.replace(p, '')
+    return text
+
+
 #preprocess to get most important words in main df column or just as a list
 def get_important_words(df, list_output = False):
-    df["important_words"] = df["texts"].apply(lambda x: x.split(" "))
+    df["important_words"] = df["text"].apply(lambda x: x.split(" "))
     df["important_words"] = df["important_words"].apply(lambda x: lemmatize(x))
     df["important_words"] = df["important_words"].apply(lambda x: remove_stop(x))
+    df["important_words"] = df["important_words"].apply(lambda x: remove_punct(x))
     df["important_words"] = df["important_words"].apply(lambda x: " ".join(x))
 
     result = df
 
     if list_output:
         temp_df = pd.DataFrame()
-        temp_df["texts"] = df["important_words"]
+        temp_df["text"] = df["important_words"]
 
         list_of_lists_for_each_text = temp_df.values.tolist()
         list_of_strings_for_each_text = []
@@ -63,7 +72,7 @@ def get_important_words(df, list_output = False):
 
 def get_list_of_strings(df):
     temp_df = pd.DataFrame()
-    temp_df["texts"] = df["texts"]
+    temp_df["text"] = df["text"]
 
     list_of_lists_for_each_text = temp_df.values.tolist()
     list_of_strings_for_each_text = []
@@ -117,15 +126,16 @@ def get_clusters_plotted(df, default_on_comments =True, default_w_stopwords = Tr
         list_of_strings = get_important_words(df, list_output = True)
         bow = list_of_strings.split(" ")
         #remove duplicates by converting to set and reconverting to list
-        s_bow = set(bow)
-        bow2 = list(s_bow)
+        #s_bow = set(bow)
+        #bow2 = list(s_bow)
 
-        bow_df = pd.DataFrame(bow2)
+
+        bow_df = pd.DataFrame(bow)
         bow_df.rename(axis = 1, mapper= {0:"text"},inplace=True)
 
         #W2V
         tf_idf_vectorizer = TfidfVectorizer()
-        X = tf_idf_vectorizer.fit_transform(bow2)
+        X = tf_idf_vectorizer.fit_transform(bow)
         bow_vec_df = pd.DataFrame(X.toarray(), columns = tf_idf_vectorizer.get_feature_names())
 
         #KMeans
@@ -142,7 +152,6 @@ def get_clusters_plotted(df, default_on_comments =True, default_w_stopwords = Tr
         result_df["x"] = X_2d_df[0]
         result_df["y"] = X_2d_df[1]
 
-    result = result_df
 
     if plotting:
     #plotting
@@ -151,7 +160,7 @@ def get_clusters_plotted(df, default_on_comments =True, default_w_stopwords = Tr
         x="x",
         y="y",
         color="clusters",
-        hover_name="texts",
+        hover_name="text",
         )
 
         result = fig.show()
