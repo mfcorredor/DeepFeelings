@@ -6,9 +6,6 @@ from transformers import AutoModelForSeq2SeqLM, AutoConfig
 import torch
 from preproc import preproc
 
-
-
-
 def get_sentiment(data, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
 
     """get the sentiment analysis for a determinated tw user (user_name) and
@@ -22,10 +19,11 @@ def get_sentiment(data, model_path = "cardiffnlp/twitter-roberta-base-sentiment-
     config = AutoConfig.from_pretrained(model_path)
 
     #data = preproc(ls_product_id, user_name, n_tweets)
-    X_pred = data["text"].tolist()
+    data["text"] = data["text"].apply(lambda x: " ".join(x.split(" ")[:480]))
+    X_pred = data["text"]#.tolist()
     prediction = []
 
-    for i in range(1000):
+    for i in range(data.shape[0]):
         inputs = tokenizer(X_pred[i], return_tensors="pt")
 
         with torch.no_grad():
