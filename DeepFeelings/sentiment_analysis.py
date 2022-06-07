@@ -4,7 +4,6 @@ import numpy as np
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import AutoModelForSeq2SeqLM, AutoConfig
 import torch
-from preproc import preproc
 
 def get_sentiment(data, model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"):
 
