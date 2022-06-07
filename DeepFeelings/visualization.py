@@ -14,11 +14,11 @@ def pie_chart(data):
     #calculate percentages of sentiment for the piechart
     total_rows = data.shape[0]
 
-    positive_percentage = int(data['sentiment'].value_counts()['positive']/total_rows*100)
-    negative_percentage = int(data['sentiment'].value_counts()['negative']/total_rows*100)
-    neutral_percentage = int(data['sentiment'].value_counts()['neutral']/total_rows*100)
+    positive_percentage = int(data['sentiment'].value_counts()['Positive']/total_rows*100)
+    negative_percentage = int(data['sentiment'].value_counts()['Negative']/total_rows*100)
+    neutral_percentage = int(data['sentiment'].value_counts()['Neutral']/total_rows*100)
 
-    labels = ['negative', 'neutral', 'positive']
+    labels = ['Negative', 'Neutral', 'Positive']
     sizes = [negative_percentage, neutral_percentage, positive_percentage]
 
     #apply cyberpunk style
