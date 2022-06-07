@@ -15,7 +15,7 @@ from LDA_clustering import get_topics_LDA_model
 st.set_page_config(layout="wide")
 
 # title image
-title_image = Image.open("/home/lewagonvaleria/code/mfcorredor/DeepFeelings/DeepFeelings/images/deep-learning-large (1).jpg")
+title_image = Image.open("images/deep-learning-large (1).jpg")
 st.image(title_image)
 
 #titles and input buttons
@@ -32,9 +32,7 @@ brand = st.text_input(' ')
 
 if st.button("Get report"):
     #data = get_sentiment(product, brand)
-    data = pd.read_csv("../raw_data/example_amz_rev.csv")
-    data = data.rename(columns = {'texts': 'text', 'polarity': 'sentiment'})
-    data["sentiment"] = data["sentiment"].map({0:"negative",1:"neutral",2:"positive"})
+    data = pd.read_csv("../raw_data/sentiment_tweets_apple.csv")
     data['date'] = pd.to_datetime(data['date'])
     topics_neg, topics_pos = get_topics_LDA_model(data)
 
