@@ -14,6 +14,7 @@ def get_preproc(data):
 
     #data = get_data(ls_product_id, user_name, n_tweets)
 
+    data["text"] = data["text"].astype(str)
     # Remove user names
     data.text = data.text.apply(lambda x: ' '.join([word for word in x.split()\
                                 if not word.startswith("@")]))

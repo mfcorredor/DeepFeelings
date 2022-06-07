@@ -2,7 +2,7 @@ import pandas as pd
 import string
 import numpy as np
 
-# Prerpocessing
+# Preprocessing
 from nltk.corpus import stopwords, words
 from nltk.stem import WordNetLemmatizer
 
@@ -50,7 +50,7 @@ def get_topics_LDA_model(data, n_topics=2):
         data: dataframe with a 'text' column and a 'sentiment' column
         n_topics: number of topics to return'''
 
-    # Preprocess the data
+    # Preprocess the data, #easier ta
     preproc_LDA(data)
 
     # Separate positive and negative data to analyse

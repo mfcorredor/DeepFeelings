@@ -2,13 +2,15 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
+import os
 
 
 # using the product ID to create url
-def scrape_amz(product_id):
+def scrape_amz(product_id, pages = 5):
 
     #start webdriver
-    driver = webdriver.Chrome("/Users/jannick/Downloads/chromedriver")
+    absolute_path = os.path.abspath("../chromedriver")
+    driver = webdriver.Chrome(absolute_path)
 
     #defining the url for the first page
     page_no = 1
@@ -18,9 +20,9 @@ def scrape_amz(product_id):
     reviews = []
     review_metas = []
 
-    pages = 5
+    pages = pages
 
-    #counting no of pages, can be used for pages
+    #counting no of pages, can be used for pages =
     #driver.get(url)
     #soup = BeautifulSoup(driver.page_source, "html.parser")
     #review_count = soup.find("div", class_= "a-row a-spacing-base a-size-base").text
