@@ -49,8 +49,8 @@ def get_important_words(df, list_output = False):
     df["important_words"] = df["text"].apply(lambda x: x.split(" "))
     df["important_words"] = df["important_words"].apply(lambda x: lemmatize(x))
     df["important_words"] = df["important_words"].apply(lambda x: remove_stop(x))
-    df["important_words"] = df["important_words"].apply(lambda x: remove_punct(x))
     df["important_words"] = df["important_words"].apply(lambda x: " ".join(x))
+    df["important_words"] = df["important_words"].apply(lambda x: remove_punct(x))
 
     result = df
 
@@ -68,11 +68,10 @@ def get_important_words(df, list_output = False):
 
     return result
 
-# the wordcloud function
 
-def get_list_of_strings(df):
+def get_list_of_strings(df, column_name = "text"):
     temp_df = pd.DataFrame()
-    temp_df["text"] = df["text"]
+    temp_df["text"] = df[column_name]
 
     list_of_lists_for_each_text = temp_df.values.tolist()
     list_of_strings_for_each_text = []
@@ -94,8 +93,90 @@ def get_cloud(df, plotting = False):
         result = string_texts
     return result
 
+def get_kmeans_clusters(df, n_clusters = 4, perplexity = 30):
+    kmeans = KMeans(n_clusters = n_clusters)
+    input_list = get_list_of_strings(df) #preprocessing to list
 
-#doing clusters on the single words
+    #getting the GSE model
+    model_url = "https://tfhub.dev/google/universal-sentence-encoder/4"
+    model = hub.load(model_url)
+
+    #getting the GSE vectors
+    X = model(input_list)
+    array = np.array(X)
+    vec_df = pd.DataFrame(array)
+
+    #getting the clusters
+    y_pred = kmeans.fit_predict(X)
+    df["clusters"] = y_pred
+    result_df = df
+
+   #reshape to 2dim
+    tsne = TSNE(n_components= 2, perplexity= perplexity)
+    X_2d = tsne.fit_transform(X)
+    X_2d_df = pd.DataFrame(X_2d)
+
+    #final df
+    result_df["x"] = X_2d_df[0]
+    result_df["y"] = X_2d_df[1]
+
+    return result_df
+
+
+
+#the following function works better with the preprocessing from the get_important_words function
+#change important_words_input to false if you want to apply to the text column
+def get_tf_idf_clusters(df, n_clusters = 4, perplexity = 30, important_words_input = True):
+    kmeans = KMeans(n_clusters = n_clusters)
+
+
+    #creating a list of strings depending on the input column
+    if important_words_input:
+        list_of_strings = get_list_of_strings(df, column_name = "text")
+    else:
+        list_of_strings = get_list_of_strings(df, column_name = "important_words")
+
+    bow_df = pd.DataFrame(list_of_strings)
+    bow_df.rename(axis = 1, mapper= {0:"text"},inplace=True)
+
+    #Creating word vectors
+    tf_idf_vectorizer = TfidfVectorizer()
+    X = tf_idf_vectorizer.fit_transform(list_of_strings)
+    bow_vec_df = pd.DataFrame(X.toarray(), columns = tf_idf_vectorizer.get_feature_names())
+
+    #KMeans
+    y_pred = kmeans.fit_predict(bow_vec_df)
+    bow_df["clusters"] = y_pred
+    result_df = bow_df
+
+    #reshape to 2dim
+    tsne = TSNE(n_components= 2, perplexity= perplexity)
+    X_2d = tsne.fit_transform(X)
+    X_2d_df = pd.DataFrame(X_2d)
+
+    #final df
+    result_df["x"] = X_2d_df[0]
+    result_df["y"] = X_2d_df[1]
+
+    return result_df
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+#complex cluster function, do not use this
 def get_clusters_plotted(df, default_on_comments =True, default_w_stopwords = True, n_clusters = 4, two_dim_output = True, perplexity = 30, plotting = False):
 
     kmeans = KMeans(n_clusters = n_clusters)
@@ -143,6 +224,8 @@ def get_clusters_plotted(df, default_on_comments =True, default_w_stopwords = Tr
         bow_df["clusters"] = y_pred
         result_df = bow_df
 
+        result = result_df
+
     if two_dim_output: #reshape to 2dim
         tsne = TSNE(n_components= 2, perplexity= perplexity)
         X_2d = tsne.fit_transform(X)
@@ -152,6 +235,7 @@ def get_clusters_plotted(df, default_on_comments =True, default_w_stopwords = Tr
         result_df["x"] = X_2d_df[0]
         result_df["y"] = X_2d_df[1]
 
+        result = result_df
 
     if plotting:
     #plotting
