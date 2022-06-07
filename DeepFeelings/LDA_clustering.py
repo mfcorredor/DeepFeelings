@@ -54,8 +54,8 @@ def get_topics_LDA_model(data, n_topics=2):
     preproc_LDA(data)
 
     # Separate positive and negative data to analyse
-    data_neg = data[data['sentiment'] == 'negative']
-    data_pos = data[data['sentiment'] == 'positive']
+    data_neg = data[data['sentiment'] == 'Negative']
+    data_pos = data[data['sentiment'] == 'Positive']
 
     # Train the model on negative texts
     vectorizer = TfidfVectorizer().fit(data_neg['text'])
