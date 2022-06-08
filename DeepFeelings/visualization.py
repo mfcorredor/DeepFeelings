@@ -43,7 +43,7 @@ def word_cloud(string_of_words): #add topic as param
     ''' returns a word cloud from a list of words'''
 
     with plt.style.context('cyberpunk'):
-        fig2, ax1 = plt.subplots()
+        fig2 , ax1 = plt.subplots()
         wordcloud = WordCloud().generate(string_of_words)
 
         ax1.imshow(wordcloud, interpolation='bilinear')
