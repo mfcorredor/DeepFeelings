@@ -20,12 +20,15 @@ def pie_chart(data):
 
     labels = ['Negative', 'Neutral', 'Positive']
     sizes = [negative_percentage, neutral_percentage, positive_percentage]
+    #sentiment_colors = ['#850f2e','#bf810d','#0c853c']
+    sentiment_colors = ['#E0427C', '#F0CA47', '#3CD3A9']
 
     #apply cyberpunk style
     with plt.style.context('cyberpunk'):
         #explode = (0.1, 0, 0)
         fig1, ax1 = plt.subplots()
         ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+            colors = sentiment_colors ,
             shadow=True, startangle=90, radius=1, frame=False, textprops={'fontsize': 8})
 
         #draw circle
@@ -70,7 +73,8 @@ def timeline_chart(data):
     #dummy = sentiment_data.iloc[1,0]
 
 
-    # sentiment_colors = ['#850f2e','#bf810d','#0c853c']
+    #sentiment_colors = ['#850f2e','#bf810d','#0c853c']
+    sentiment_colors = ['#E0427C', '#F0CA47', '#3CD3A9']
     plt.rcParams["font.family"] = "cursive"
 
 
@@ -88,7 +92,8 @@ def timeline_chart(data):
         sentiment_data.iloc[:10].plot(kind = 'bar' ,
                         width = 0.7 ,
                         figsize = (14,6),
-                        ax = ax); # color can be added : color =  sentiment_colors
+                        ax = ax ,
+                        color =  sentiment_colors); # color can be added :
 
         #storing coordinates for the line
         coords = []
