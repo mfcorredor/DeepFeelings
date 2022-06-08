@@ -117,5 +117,12 @@ CSS="""
     .css-ocqkz7{
         margin-top:100px
     }
+    button{
+        background-color: white !important;
+        width: 180px !important;
+        height: 51px !important;
+        font-size: 21px !important;
+}
+    }
 """
 st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
