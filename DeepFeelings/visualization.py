@@ -6,6 +6,7 @@ import plotly.express as px
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import mplcyberpunk
+import plotly.graph_objects as go
 
 
 def pie_chart(data):
@@ -29,13 +30,14 @@ def pie_chart(data):
         fig1, ax1 = plt.subplots()
         ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
             colors = sentiment_colors ,
-            shadow=True, startangle=90, radius=1, frame=False, textprops={'fontsize': 8})
+            shadow=False, startangle=90, radius=1, frame=False, textprops={'fontsize': 8})
 
         #draw circle
         centre_circle = plt.Circle((0,0),0.70,fc='#212946')
         fig = plt.gcf()
         fig.gca().add_artist(centre_circle)
         ax1.axis('equal')
+        plt.title("Percentage of emotions in comments")
 
     return fig1
 
@@ -142,3 +144,72 @@ def timeline_chart(data):
         plt.tight_layout()
 
         return fig3
+
+
+def timeline_chart_week(data):
+    data["sentiment"] = data["sentiment"].apply(lambda x : x.capitalize())
+    data['date'] = pd.to_datetime(data['date'])
+    data.sort_values(by = ['date'] , inplace = True)
+    data['day'] = pd.to_datetime(data['date'].apply(lambda x : str(x).split(' ')[0]))
+    sentiment_data = data.groupby('day').agg( sentiment_fractions =
+                ('sentiment',
+                lambda x : x.value_counts().to_dict()))
+    polars = ['Negative','Neutral','Positive']
+
+    for sentiment in polars:
+        sentiment_data.loc[:,sentiment] = sentiment_data['sentiment_fractions']\
+                                            .apply(lambda sentiment_dict : sentiment_dict.get(sentiment))\
+                                            .fillna(0.0)\
+                                            .round(2)
+    sentiment_data.drop( columns = ['sentiment_fractions'] , inplace= True)
+
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=sentiment_data.index,
+        y=sentiment_data.loc[:,"Negative"],
+        name='Negative Comments',
+        marker_color='#E0427C'
+    ))
+    fig.add_trace(go.Bar(
+        x=sentiment_data.index,
+        y=sentiment_data.loc[:,"Neutral"],
+        name='Neutral Comments',
+        marker_color='#F0CA47'
+    ))
+
+    fig.add_trace(go.Bar(
+        x=sentiment_data.index,
+        y=sentiment_data.loc[:,"Positive"],
+        name='Positive Comments',
+        marker_color='#3CD3A9'
+    ))
+
+    fig.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
+    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig.update_layout(
+         autosize=False,
+         width=1400,
+         height=600,
+         paper_bgcolor="white",
+        xaxis_tickangle = - 45,
+        title='Social Media Activity',
+        xaxis = dict(title = "Date" ,
+                    tickfont_size=14),
+        yaxis=dict(
+            title='Number of Comments',
+            titlefont_size=16,
+            tickfont_size=14,
+        ),
+        legend=dict(
+            x=0,
+            y=1.0,
+            bgcolor='rgba(255, 255, 255, 0)',
+            bordercolor='rgba(255, 255, 255, 0)'
+        ),
+        barmode='group',
+        bargap=0.15, # gap between bars of adjacent location coordinates.
+        bargroupgap=0.1 # gap between bars of the same location coordinate.
+    )
+
+    return fig
