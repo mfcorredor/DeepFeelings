@@ -61,7 +61,7 @@ class Pagination:
         st.session_state.runpage()
 
     def main_page(self):
-        set_bg_hack('../raw_data/background_opt.gif')
+        set_bg_hack('../background_opt.gif')
         new_title = '<p style="font-family:sans-serif; font-weight:bold; color:white; font-size: 120px;">DeepFeelings</p>'
         input_1 = '<p style="font-family:sans-serif; font-weight:bold; color:white; font-size: 25px;">Insert product name</p>'
         input_2 = '<p style="font-family:sans-serif; font-weight:bold; color:white; font-size: 25px;">Insert brand name</p>'
