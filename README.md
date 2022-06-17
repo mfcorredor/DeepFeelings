@@ -1,4 +1,4 @@
-![](./demo/lego_faces.jpg.jpg)
+![](./demo/lego_faces.jpg)
 
 # DeepFeelings
 DeepFeelings is project created to know the impact of a brand, or a product, on social media.
@@ -6,3 +6,5 @@ DeepFeelings is project created to know the impact of a brand, or a product, on 
 It differentiates between positive, neutral, and negative comments, in total and during a timeline, and it gives the most common topics surrounding  it.
 
 # Demo
+
+![](./demo/demo.gif)
