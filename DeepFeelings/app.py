@@ -5,7 +5,7 @@ import pandas as pd
 import emoji
 import plotly.express as px
 from PIL import Image
-from visualization import pie_chart, timeline_chart, word_cloud
+from visualization import pie_chart, timeline_chart, word_cloud, timeline_chart_week
 #from sentiment_analysis import get_sentiment
 from LDA_clustering import get_topics_LDA_model, preproc_LDA
 import base64
@@ -50,8 +50,8 @@ class Pagination:
                 width: 180px !important;
                 height: 51px !important;
                 font-size: 21px !important;
-        }
-            }
+                                            }
+
     """
 
     def __init__(self):
@@ -109,6 +109,7 @@ class Pagination:
             fig3 = timeline_chart(data_amz)
         elif brand != '':
             data = pd.read_csv(f"../raw_data/sentiment_tw_{brand}.csv")
+            fig4 = timeline_chart_week(data)
             topic = self.topics['negative_topics'][f"{brand}_tw"]
         elif product != '':
             data = pd.read_csv(f"../raw_data/sentiment_amz_{product}.csv")
@@ -140,11 +141,14 @@ class Pagination:
 
         with columns[1]:
             st.markdown("""<p style="font-family:sans-serif; font-weight:bold; color:White; font-size: 30px;">
-                        Most common words used in the reviews or tweets</p>""",
+                        Keywords of negative comments</p>""",
                         unsafe_allow_html=True)
             second_column = columns[1].pyplot(fig2)
         if product != '':
             st.pyplot(fig3)
+
+        if brand != '':
+            st.plotly_chart(fig4)
 
 
         st.write(f'<style>{Pagination.CSS}</style>', unsafe_allow_html=True)
