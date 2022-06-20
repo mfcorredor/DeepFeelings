@@ -22,13 +22,16 @@ google-cloud-storage
 s3fs
 tweepy
 requests
+dotenv
+time
+datetime
 
 # utilities
 six>=1.14
 joblib
 memoized-property
 termcolor
-
+os
 
 # web scraping
 bs4
@@ -38,13 +41,27 @@ python-dotenv
 #scraping
 selenium
 
-
-#preprocessing
+# preprocessing
 string
 nltk.stem
 nltk.corpus
 re
 emoji
 
-#model
+# model
 tensorflow_hub
+transformers
+torch
+
+# front-end
+streamlit
+base64
+PIL
+
+
+# visualization
+wordcloud
+mplcyberpunk
+plotly.graph_objects
+plotly.express
+matplotlib.pyplot
