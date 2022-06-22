@@ -37,9 +37,8 @@ os
 bs4
 requests
 python-dotenv
-
-#scraping
 selenium
+cloudscraper
 
 # preprocessing
 string
