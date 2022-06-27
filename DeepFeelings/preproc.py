@@ -4,17 +4,19 @@ import string
 import numpy as np
 import emoji
 from nltk.corpus import words
-from amzwbscr_selenium import scrape_amz
-from twitter_api import get_lastest_tweets
 
 def remove_emoji(text):
     return emoji.get_emoji_regexp().sub(u'', text)
 
 def get_preproc(data):
-
-    #data = get_data(ls_product_id, user_name, n_tweets)
+    """
+    Preprocesses the data (texts) to pass to RoBERTa model
+        data (DataFrame): df with a text and a date column
+    Returns the DataFrame preprocessed
+    """
 
     data["text"] = data["text"].astype(str)
+
     # Remove user names
     data.text = data.text.apply(lambda x: ' '.join([word for word in x.split()\
                                 if not word.startswith("@")]))
@@ -33,19 +35,6 @@ def get_preproc(data):
 
     #remove some punctuation
     data.text = data.text.apply(lambda x: re.sub('<*>+', '', x))
-
-    #containing numbers
-    #data.text = data.text.apply(lambda x: re.sub('\n', '', x))
-
-    #remove numbers
-    #data.text = data.text.apply(lambda x: re.sub('\w*\d\w*', '', x))
-
-    #remove numbers
-    #data.text = ''.join([i for i in data.text if not i.isdigit()])
-
-    # Remove user names
-    data.text = data.text.apply(lambda x: ' '.join([word for word in x.split()\
-                                if not word.startswith("@")]))
 
     # Remove non english words
     en_words = set(words.words())

@@ -6,8 +6,10 @@ import emoji
 import plotly.express as px
 from PIL import Image
 from visualization import pie_chart, timeline_chart, word_cloud, timeline_chart_week
-#from sentiment_analysis import get_sentiment
-from LDA_clustering import get_topics_LDA_model, preproc_LDA
+from twitter_api import get_tweets
+from amz_scraper import get_reviews
+from sentiment_analysis import get_sentiment
+from LDA_clustering import get_topics
 import base64
 
 # page config, use the full page instead of a narrow central column
@@ -88,17 +90,19 @@ class Pagination:
                         DeepFeelings</p>""", unsafe_allow_html = True)
 
         representation = f"Sentiment Analysis for {st.session_state['product']}."
+
         if st.session_state["brand"]:
             representation = representation[:-1] + f" ({st.session_state['brand']})."
         st.markdown(f"""<p style="font-family:sans-serif; font-weight:bold; color:White; font-size: 40px;">
                         {representation}</p>""", unsafe_allow_html = True)
 
-        self.topics = pd.read_csv('../raw_data/topics_neg.csv', index_col='brand_product')
+        #self.topics = pd.read_csv('../raw_data/topics_neg.csv', index_col='brand_product')
         brand = st.session_state["brand"]
         product = st.session_state["product"]
         brand = brand.lower()
         product = product.lower()
-        if brand != '' and product != '':
+
+        '''if brand != '' and product != '':
             file_list = [f"../raw_data/sentiment_amz_{product}.csv",
                          f"../raw_data/sentiment_tw_{brand}.csv"]
             csv_list = [pd.read_csv(file) for file in file_list]
@@ -106,17 +110,20 @@ class Pagination:
             data_amz = pd.read_csv(file_list[0])
             data_amz['date'] = pd.to_datetime(data['date'])
             topic = self.topics['negative_topics'][brand]
-            fig3 = timeline_chart(data_amz)
-        elif brand != '':
-            data = pd.read_csv(f"../raw_data/sentiment_tw_{brand}.csv")
-            fig4 = timeline_chart_week(data)
-            topic = self.topics['negative_topics'][f"{brand}_tw"]
-        elif product != '':
-            data = pd.read_csv(f"../raw_data/sentiment_amz_{product}.csv")
-            data['date'] = pd.to_datetime(data['date'])
-            topic = self.topics['negative_topics'][f"{product}_amz"]
-            fig3 = timeline_chart(data)
+            fig3 = timeline_chart(data_amz)'''
 
+        if brand != '':
+            tweets = get_tweets(brand, 50)
+            data = get_sentiment(tweets)
+            topic = get_topics(data)[0]
+            #fig4 = timeline_chart_week(data)
+
+        elif product != '':
+            reviews = get_reviews(product)
+            data = get_sentiment(reviews)
+            data['date'] = pd.to_datetime(data['date'])
+            topic = get_topics(data)
+            fig3 = timeline_chart(data)
 
         fig1 = pie_chart(data)
         fig2 = word_cloud(topic)
@@ -147,8 +154,8 @@ class Pagination:
         if product != '':
             st.pyplot(fig3)
 
-        if brand != '':
-            st.plotly_chart(fig4)
+        #if brand != '':
+            #st.plotly_chart(fig4)
 
 
         st.write(f'<style>{Pagination.CSS}</style>', unsafe_allow_html=True)
